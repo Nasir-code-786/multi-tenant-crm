@@ -8,6 +8,7 @@ import { ErrorMessage } from '@/components/shared/ErrorMessage';
 import { Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
+
   const router = useRouter();
   const [email, setEmail] = useState('alice@techcorp.com');
   const [password, setPassword] = useState('password123');
@@ -89,15 +90,45 @@ export default function LoginPage() {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-
           <div className="mt-8 pt-6 border-t border-neutral-200">
-            <p className="text-xs text-neutral-500 mb-2 font-medium">Test accounts:</p>
-            <ul className="text-xs text-neutral-500 space-y-1">
-              <li>alice@techcorp.com (admin)</li>
-              <li>bob@techcorp.com (member)</li>
-              <li>dave@startupxyz.com (admin)</li>
-              <li className="text-neutral-400">password: password123</li>
+            <p className="text-xs text-neutral-500 mb-2 font-semibold uppercase tracking-wide">
+              Demo Accounts
+            </p>
+
+            <ul className="text-xs text-neutral-600 space-y-1">
+              <li>
+                <span className="font-medium text-neutral-700">alice@techcorp.com</span>
+                <span className="text-neutral-500"> — Admin</span>
+              </li>
+              <li>
+                <span className="font-medium text-neutral-700">bob@techcorp.com</span>
+                <span className="text-neutral-500"> — Member</span>
+              </li>
+              <li>
+                <span className="font-medium text-neutral-700">dave@startupxyz.com</span>
+                <span className="text-neutral-500"> — Admin</span>
+              </li>
             </ul>
+
+            <p className="text-xs text-neutral-400 mt-3">
+              Default password: <span className="font-medium">password123</span>
+            </p>
+          </div>
+          <div className="mt-6 pt-5 border-t border-neutral-200">
+            <button
+              type="button"
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/files/Full-Stack-Engineer-Home-Assignment.pdf';
+                link.download = 'Full-Stack-Engineer-Home-Assignment.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="text-sm text-orange-600 hover:text-orange-700 font-semibold hover:underline transition"
+            >
+              View Assigned Task
+            </button>
           </div>
         </div>
       </div>
