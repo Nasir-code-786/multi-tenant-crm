@@ -5,5 +5,5 @@ export class CreateNoteDto {
   @ApiProperty({ minLength: 1 })
   @IsString()
   @MinLength(1)
-  content: string;
+  content!: string;
 }

@@ -4,5 +4,5 @@ import { IsUUID } from 'class-validator';
 export class AssignCustomerDto {
   @ApiProperty()
   @IsUUID()
-  userId: string;
+  userId!: string;
 }

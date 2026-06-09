@@ -11,17 +11,17 @@ import { Customer } from '../customers/customer.entity';
 @Entity('organizations')
 export class Organization {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @OneToMany(() => User, (user) => user.organization)
-  users: User[];
+  users!: User[];
 
   @OneToMany(() => Customer, (customer) => customer.organization)
-  customers: Customer[];
+  customers!: Customer[];
 }

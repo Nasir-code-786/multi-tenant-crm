@@ -10,11 +10,11 @@ import {
 export class CreateCustomerDto {
   @ApiProperty()
   @IsString()
-  name: string;
+  name!: string;
 
   @ApiProperty()
   @IsEmail()
-  email: string;
+  email!: string;
 
   @ApiPropertyOptional()
   @IsOptional()

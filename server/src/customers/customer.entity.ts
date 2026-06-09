@@ -17,39 +17,39 @@ import { User } from '../users/user.entity';
 @Index('idx_customers_assigned', ['assignedTo'])
 export class Customer {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
   @Column({ nullable: true })
-  phone: string;
+  phone!: string;
 
   @Column('uuid')
-  organizationId: string;
+  organizationId!: string;
 
   @ManyToOne(() => Organization, (org) => org.customers, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'organizationId' })
-  organization: Organization;
+  organization!: Organization;
 
   @Column('uuid', { nullable: true })
-  assignedTo: string | null;
+  assignedTo!: string | null;
 
   @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'assignedTo' })
-  assignee: User | null;
+  assignee!: User | null;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @DeleteDateColumn({ nullable: true })
-  deletedAt: Date | null;
+  deletedAt!: Date | null;
 }

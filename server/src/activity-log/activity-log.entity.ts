@@ -21,30 +21,30 @@ export type ActivityAction =
 @Index('idx_activity_logs_entity', ['entityId', 'entityType'])
 export class ActivityLog {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  entityType: string;
+  entityType!: string;
 
   @Column('uuid')
-  entityId: string;
+  entityId!: string;
 
   @Column()
-  action: ActivityAction;
+  action!: ActivityAction;
 
   @Column('uuid')
-  performedBy: string;
+  performedBy!: string;
 
   @ManyToOne(() => User, { onDelete: 'SET NULL', nullable: true })
   @JoinColumn({ name: 'performedBy' })
-  performer: User;
+  performer!: User;
 
   @Column('uuid')
-  organizationId: string;
+  organizationId!: string;
 
   @Column('jsonb', { nullable: true })
-  metadata: Record<string, unknown> | null;
+  metadata!: Record<string, unknown> | null;
 
   @CreateDateColumn()
-  timestamp: Date;
+  timestamp!: Date;
 }

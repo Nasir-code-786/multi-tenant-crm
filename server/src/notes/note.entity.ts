@@ -14,28 +14,28 @@ import { User } from '../users/user.entity';
 @Index('idx_notes_customer', ['customerId'])
 export class Note {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column('text')
-  content: string;
+  content!: string;
 
   @Column('uuid')
-  customerId: string;
+  customerId!: string;
 
   @ManyToOne(() => Customer, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'customerId' })
-  customer: Customer;
+  customer!: Customer;
 
   @Column('uuid')
-  organizationId: string;
+  organizationId!: string;
 
   @Column('uuid')
-  createdById: string;
+  createdById!: string;
 
   @ManyToOne(() => User, { onDelete: 'SET NULL', nullable: true })
   @JoinColumn({ name: 'createdById' })
-  createdBy: User;
+  createdBy!: User;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 }

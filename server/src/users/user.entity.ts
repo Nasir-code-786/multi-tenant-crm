@@ -15,27 +15,27 @@ export type UserRole = 'admin' | 'member';
 @Index('idx_users_org', ['organizationId'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column()
-  password: string;
+  password!: string;
 
   @Column({ type: 'enum', enum: ['admin', 'member'], default: 'member' })
-  role: UserRole;
+  role!: UserRole;
 
   @Column('uuid')
-  organizationId: string;
+  organizationId!: string;
 
   @ManyToOne(() => Organization, (org) => org.users, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'organizationId' })
-  organization: Organization;
+  organization!: Organization;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 }
