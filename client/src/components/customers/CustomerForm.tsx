@@ -118,21 +118,6 @@ export function CustomerForm({ mode }: { mode: 'create' | 'edit' }) {
             }
           />
         </div>
-        <div>
-          <label className="label">Assign To</label>
-          <select
-            className="input"
-            value={form.assignedTo}
-            onChange={(e) => setForm({ ...form, assignedTo: e.target.value })}
-          >
-            <option value="">Unassigned</option>
-            {users?.map((u) => (
-              <option key={u.id} value={u.id}>
-                {u.name} ({u.role})
-              </option>
-            ))}
-          </select>
-        </div>
 
         {error && <ErrorMessage message={error} />}
 
