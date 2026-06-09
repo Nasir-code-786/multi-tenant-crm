@@ -294,29 +294,56 @@ The bulk script runs benchmark queries (count, paginated fetch, deep offset, ILI
 
 ---
 
-## 5. How I Would Scale This System
+### Future scaling improvements.
 
-### Short term (single deployment)
+Think of this as basic traffic control for your API.
 
-- Replace `synchronize: true` with **TypeORM migrations** for safe schema changes.
-- Add **connection pooling** (PgBouncer) as concurrent users grow.
-- Cap `limit` on pagination endpoints to prevent abuse.
-- Add **rate limiting** (`@nestjs/throttler`) on auth and write endpoints.
+🟢 1. Rate Limiting (stop abuse)
 
-### Medium term (more tenants & traffic)
+Like a security guard at a gate.
 
-- **Read replicas** for customer list and search queries; writes stay on primary.
-- **Redis cache** for frequently accessed customer detail pages and user lists (short TTL, invalidate on mutation).
-- **Background jobs** (BullMQ) for bulk imports, email notifications, and heavy report generation.
-- Move activity log writes to an **async event bus** to decouple from request latency.
+Limits how many requests a user can make
+Prevents spam and server overload
+Example: 100 requests per minute per user
 
-### Long term (many organizations)
+👉 Use case:
 
-- **Horizontal sharding** by `organizationId` if a single Postgres instance becomes a bottleneck.
-- **Dedicated tenant guard middleware** that asserts `organizationId` on every request automatically.
-- **PostgreSQL Row-Level Security** as a second layer of tenant isolation.
-- Separate **search service** (Elasticsearch / Meilisearch) for full-text search at scale.
-- **Observability** — structured logging, distributed tracing (OpenTelemetry), and metrics per tenant.
+Login endpoints
+Signup
+Any public API
+🟢 2. Throttling (slow down heavy users)
+
+Like slowing down cars in heavy traffic instead of blocking them.
+
+Instead of rejecting instantly, you slow repeated requests
+Helps keep system stable under load
+
+👉 Example:
+
+First 50 requests are fast
+After that, requests are delayed or limited
+🟢 3. Pagination (don’t load everything at once)
+
+Like serving food in plates instead of bringing the whole kitchen.
+
+Don’t return all records at once
+Return data in chunks
+
+👉 Example:
+
+GET /customers?page=1&limit=20
+limit controls how many records per request
+🟢 4. Sorting (control data order)
+
+Like organizing items on a shelf.
+
+Lets users decide order of data
+Improves usability and reduces confusion
+
+👉 Example:
+
+GET /customers?sort=createdAt_desc
+GET /customers?sort=name_asc
 
 ---
 
