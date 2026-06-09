@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDir": "..",
     "noEmit": true,
+    "incremental": false,
     "types": ["jest", "node"]
   },
   "include": ["../src/**/*", "./**/*.ts"],
