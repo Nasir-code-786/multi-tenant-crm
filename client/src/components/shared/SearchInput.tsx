@@ -15,7 +15,7 @@ export function SearchInput({ onSearch, placeholder = 'Search...' }: Props) {
 
   return (
     <div className="relative w-full max-w-md">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
       <input
         type="text"
         value={value}

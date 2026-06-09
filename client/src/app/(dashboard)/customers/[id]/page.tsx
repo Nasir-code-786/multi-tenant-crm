@@ -29,10 +29,7 @@ export default function CustomerDetailPage() {
 
   return (
     <div>
-      <Link
-        href="/customers"
-        className="inline-flex items-center gap-2 text-sm text-[#94A3B8] hover:text-white mb-6"
-      >
+      <Link href="/customers" className="link-back mb-6">
         <ArrowLeft className="w-4 h-4" /> Back to Customers
       </Link>
 
@@ -41,33 +38,35 @@ export default function CustomerDetailPage() {
           <div className="flex items-center gap-4 mb-4">
             <Avatar name={customer.name} size="lg" />
             <div>
-              <h1 className="text-2xl font-bold">{customer.name}</h1>
-              <p className="text-[#94A3B8]">{customer.email}</p>
+              <h1 className="page-title">{customer.name}</h1>
+              <p className="text-muted">{customer.email}</p>
             </div>
           </div>
           <dl className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <dt className="text-[#94A3B8]">Phone</dt>
-              <dd>{customer.phone ?? '—'}</dd>
+              <dt className="text-muted">Phone</dt>
+              <dd className="font-medium">{customer.phone ?? '—'}</dd>
             </div>
             <div>
-              <dt className="text-[#94A3B8]">Created</dt>
-              <dd>{formatDate(customer.createdAt)}</dd>
+              <dt className="text-muted">Created</dt>
+              <dd className="font-medium">{formatDate(customer.createdAt)}</dd>
             </div>
           </dl>
         </div>
-        <div className="card p-6">
-          <h3 className="text-sm font-medium text-[#94A3B8] mb-3">Assigned To</h3>
+        <div className="card p-6 border-l-4 border-l-orange-500">
+          <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wide mb-3">
+            Assigned To
+          </h3>
           {customer.assignee ? (
             <div className="flex items-center gap-3 mb-4">
               <Avatar name={customer.assignee.name} />
               <div>
                 <div className="font-medium">{customer.assignee.name}</div>
-                <div className="text-xs text-[#94A3B8]">{customer.assignee.email}</div>
+                <div className="text-xs text-muted">{customer.assignee.email}</div>
               </div>
             </div>
           ) : (
-            <p className="text-sm text-[#94A3B8] mb-4">Unassigned</p>
+            <p className="text-sm text-muted mb-4">Unassigned</p>
           )}
           <button onClick={() => openAssign(customer.id)} className="btn-secondary w-full">
             <UserCog className="w-4 h-4" /> Change Assignment
@@ -76,7 +75,7 @@ export default function CustomerDetailPage() {
       </div>
 
       <div className="card mb-6">
-        <div className="flex items-center justify-between p-4 border-b border-[#334155]">
+        <div className="card-header">
           <h2 className="font-semibold">Notes</h2>
           <button onClick={() => openNote(customer.id)} className="btn-primary">
             <Plus className="w-4 h-4" /> Add Note
@@ -86,7 +85,7 @@ export default function CustomerDetailPage() {
       </div>
 
       <div className="card">
-        <div className="p-4 border-b border-[#334155]">
+        <div className="card-header">
           <h2 className="font-semibold">Activity Log</h2>
         </div>
         <ActivityTimeline logs={activity ?? []} />

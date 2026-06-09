@@ -448,14 +448,217 @@ Before restore, the system re-checks email uniqueness within the organization to
 
 ---
 
-## Deployment Notes
+## Deploy to Railway + Vercel
 
-This repository is designed to run as two services:
+This guide walks through a live deployment: **PostgreSQL + API on Railway**, **frontend on Vercel**.
 
-1. **API** — deploy `server/` (e.g. Railway, Render, Fly.io) with PostgreSQL attached.
-2. **Frontend** — deploy `client/` (e.g. Vercel) with `NEXT_PUBLIC_API_URL` pointing to the deployed API.
+> **Important:** Visiting the deployed URL does **not** create users or customers automatically. After deploy, you must **run the seed once** (or manually create the first admin) before anyone can log in.
 
-Ensure production environment variables are set (`JWT_SECRET`, database credentials, CORS origin). Disable `synchronize: true` and use migrations before any real deployment.
+### Architecture (live)
+
+```
+User browser
+    ↓
+https://your-app.vercel.app          (Vercel — Next.js client)
+    ↓  API calls (HTTPS)
+https://your-api.up.railway.app/api  (Railway — NestJS server)
+    ↓
+Railway PostgreSQL                   (database)
+```
+
+---
+
+### Prerequisites
+
+- GitHub repository with this project pushed
+- [Railway](https://railway.app) account
+- [Vercel](https://vercel.com) account
+
+---
+
+### Part 1 — PostgreSQL on Railway
+
+1. Log in to [Railway](https://railway.app) → **New Project**
+2. Click **+ New** → **Database** → **PostgreSQL**
+3. Wait until Postgres is running
+4. Open the Postgres service → **Variables** or **Connect** tab
+5. Note the connection values (Railway exposes `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`)
+
+**Live result:** Empty PostgreSQL instance. No CRM data yet.
+
+---
+
+### Part 2 — API (server) on Railway
+
+1. In the same Railway project → **+ New** → **GitHub Repo** → select your repo
+2. Open the new service → **Settings**
+3. Set **Root Directory** to `server`
+4. Set **Build Command** (if not auto-detected):
+
+   ```bash
+   npm install && npm run build
+   ```
+
+5. Set **Start Command**:
+
+   ```bash
+   npm run start:prod
+   ```
+
+6. Go to **Variables** and add:
+
+   | Variable | Value |
+   |----------|--------|
+   | `DATABASE_HOST` | `${{Postgres.PGHOST}}` *(reference your Postgres service name)* |
+   | `DATABASE_PORT` | `${{Postgres.PGPORT}}` |
+   | `DATABASE_USER` | `${{Postgres.PGUSER}}` |
+   | `DATABASE_PASSWORD` | `${{Postgres.PGPASSWORD}}` |
+   | `DATABASE_NAME` | `${{Postgres.PGDATABASE}}` |
+   | `JWT_SECRET` | A long random string (e.g. `openssl rand -base64 32`) |
+   | `JWT_EXPIRES_IN` | `7d` |
+   | `PORT` | Railway usually sets this automatically — leave it if present |
+
+   **Tip:** In Railway, use **Variable Reference** to link Postgres vars instead of copying passwords manually. If your Postgres service is not named `Postgres`, adjust the reference (e.g. `${{PostgreSQL.PGHOST}}`).
+
+7. **Deploy** the service
+8. Open **Settings** → **Networking** → **Generate Domain** (e.g. `https://multi-tenant-crm-production.up.railway.app`)
+
+**What happens on first deploy:**
+
+- Server starts and connects to Postgres
+- TypeORM creates **empty tables** (`synchronize: true` — fine for demo/evaluation)
+- API is live at `https://YOUR-RAILWAY-DOMAIN/api`
+- Swagger at `https://YOUR-RAILWAY-DOMAIN/api/docs`
+
+**Verify:** Open `https://YOUR-RAILWAY-DOMAIN/api/docs` in a browser — you should see Swagger UI.
+
+---
+
+### Part 3 — Seed the live database (required once)
+
+The app has **no public registration**. Without seed (or manual admin setup), login will fail.
+
+#### Option A — Railway CLI (recommended)
+
+1. Install Railway CLI: https://docs.railway.app/develop/cli
+2. Log in and link your project:
+
+   ```bash
+   railway login
+   railway link
+   ```
+
+3. Run seed against the deployed server service (from repo root):
+
+   ```bash
+   cd server
+   railway run npm run seed
+   ```
+
+#### Option B — From your machine (if Postgres allows external connections)
+
+1. In Railway Postgres → enable **Public Networking** (if available) or use connection URL
+2. Create a local `server/.env` with Railway Postgres credentials
+3. Run:
+
+   ```bash
+   cd server
+   npm run seed
+   ```
+
+**After seed, these accounts work on the live site:**
+
+| Email | Password | Role |
+|-------|----------|------|
+| alice@techcorp.com | password123 | admin |
+| bob@techcorp.com | password123 | member |
+| dave@startupxyz.com | password123 | admin |
+
+---
+
+### Part 4 — Frontend (client) on Vercel
+
+1. Log in to [Vercel](https://vercel.com) → **Add New** → **Project**
+2. Import your GitHub repository
+3. Configure the project:
+
+   | Setting | Value |
+   |---------|--------|
+   | **Root Directory** | `client` |
+   | **Framework Preset** | Next.js (auto-detected) |
+   | **Build Command** | `npm run build` (default) |
+   | **Output Directory** | `.next` (default) |
+
+4. Add **Environment Variable**:
+
+   | Name | Value |
+   |------|--------|
+   | `NEXT_PUBLIC_API_URL` | `https://YOUR-RAILWAY-DOMAIN/api` |
+
+   Example: `https://multi-tenant-crm-production.up.railway.app/api`
+
+   > Must include `/api` at the end — the NestJS global prefix is `api`.
+
+5. Click **Deploy**
+
+6. Vercel gives you a URL, e.g. `https://multi-tenant-crm.vercel.app`
+
+---
+
+### Part 5 — Test the live system
+
+1. Open your **Vercel URL**
+2. Log in with `alice@techcorp.com` / `password123`
+3. You should see customers (from seed), create notes, assign users, etc.
+4. All new data is saved in **Railway Postgres** via the **Railway API**
+
+**If login fails:**
+
+| Check | Fix |
+|-------|-----|
+| Seed not run | Run `npm run seed` (Part 3) |
+| Wrong API URL | `NEXT_PUBLIC_API_URL` must be Railway URL + `/api` |
+| Vercel env not applied | Redeploy Vercel after changing env vars |
+| Server not running | Check Railway deploy logs |
+| CORS / network errors | Open browser DevTools → Network tab; confirm requests go to Railway |
+
+---
+
+### How data is created live (after deploy)
+
+| Action | Who | Result |
+|--------|-----|--------|
+| Someone opens Vercel URL | Anyone | UI loads only — **no data created** |
+| Login | Existing user | JWT issued |
+| Create user | Admin | New user in DB |
+| Create customer | Admin or member | Customer + activity log |
+| Add note | Logged-in user | Note + activity log |
+| Assign customer | Logged-in user | Assignment + activity log |
+
+There is **no self-registration**. First users come from **seed** or an admin you create manually in the database.
+
+---
+
+### Production checklist (before sharing widely)
+
+- [ ] Change `JWT_SECRET` to a strong unique value
+- [ ] Run seed once (or create production admin manually)
+- [ ] Confirm `NEXT_PUBLIC_API_URL` on Vercel points to Railway
+- [ ] Test login and create customer on live URL
+- [ ] Optional: restrict CORS to your Vercel domain (currently `origin: true`)
+- [ ] Optional: replace `synchronize: true` with migrations for long-term production
+- [ ] Do **not** commit `.env` or `.env.local` files
+
+---
+
+### Submission URLs (fill in after deploy)
+
+| Service | URL |
+|---------|-----|
+| **Frontend (Vercel)** | `https://________________.vercel.app` |
+| **API (Railway)** | `https://________________.up.railway.app/api` |
+| **Swagger docs** | `https://________________.up.railway.app/api/docs` |
+| **GitHub repo** | `https://github.com/________________/multi-tenant-crm` |
 
 ---
 

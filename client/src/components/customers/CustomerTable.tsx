@@ -17,7 +17,7 @@ export function CustomerTable({ customers }: Props) {
 
   if (customers.length === 0) {
     return (
-      <div className="card p-8 text-center text-[#94A3B8]">
+      <div className="card p-8 text-center text-muted">
         No customers found
       </div>
     );
@@ -26,7 +26,7 @@ export function CustomerTable({ customers }: Props) {
   return (
     <div className="card overflow-hidden">
       <table className="w-full text-sm">
-        <thead className="bg-[#0F172A] text-[#94A3B8] text-left">
+        <thead className="table-head">
           <tr>
             <th className="px-4 py-3 font-medium">Name</th>
             <th className="px-4 py-3 font-medium">Email</th>
@@ -35,27 +35,25 @@ export function CustomerTable({ customers }: Props) {
             <th className="px-4 py-3 font-medium text-right">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-[#334155]">
+        <tbody className="table-divide">
           {customers.map((c) => (
-            <tr key={c.id} className="hover:bg-[#0F172A]/40">
+            <tr key={c.id} className="table-row">
               <td className="px-4 py-3">
                 <div className="flex items-center gap-3">
                   <Avatar name={c.name} size="sm" />
-                  <span className="font-medium">{c.name}</span>
+                  <span className="font-medium text-neutral-900">{c.name}</span>
                 </div>
               </td>
-              <td className="px-4 py-3 text-[#94A3B8]">{c.email}</td>
-              <td className="px-4 py-3 text-[#94A3B8]">{c.phone ?? '—'}</td>
+              <td className="px-4 py-3 text-muted">{c.email}</td>
+              <td className="px-4 py-3 text-muted">{c.phone ?? '—'}</td>
               <td className="px-4 py-3">
                 {c.assignee ? (
-                  <div className="inline-flex items-center gap-2 bg-[#334155]/50 px-2 py-1 rounded-full">
+                  <div className="badge">
                     <Avatar name={c.assignee.name} size="sm" />
-                    <span className="text-xs pr-1">{c.assignee.name}</span>
+                    <span className="pr-1">{c.assignee.name}</span>
                   </div>
                 ) : (
-                  <span className="text-xs text-[#94A3B8] bg-[#334155]/50 px-2 py-1 rounded-full">
-                    Unassigned
-                  </span>
+                  <span className="badge-muted">Unassigned</span>
                 )}
               </td>
               <td className="px-4 py-3 text-right">
@@ -71,7 +69,7 @@ export function CustomerTable({ customers }: Props) {
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
-                    className="btn-icon hover:text-[#EF4444]"
+                    className="btn-icon hover:!text-red-600 hover:!bg-red-50"
                     title="Delete"
                     onClick={() => {
                       if (confirm(`Delete customer "${c.name}"?`))

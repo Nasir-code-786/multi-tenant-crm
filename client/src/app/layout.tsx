@@ -6,7 +6,7 @@ import { Providers } from '@/components/providers/Providers';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'CRM Pro',
+  title: 'Multi-Tenant CRM',
   description: 'Multi-Tenant CRM System',
 };
 

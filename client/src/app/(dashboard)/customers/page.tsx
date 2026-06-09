@@ -21,7 +21,7 @@ export default function CustomersPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Customers</h1>
+        <h1 className="page-title">Customers</h1>
         <button onClick={openCreate} className="btn-primary">
           <Plus className="w-4 h-4" /> New Customer
         </button>

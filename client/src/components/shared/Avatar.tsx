@@ -1,12 +1,12 @@
 import { getInitials } from '@/lib/utils';
 
 const COLORS = [
-  'bg-indigo-500',
-  'bg-emerald-500',
-  'bg-amber-500',
-  'bg-pink-500',
-  'bg-cyan-500',
-  'bg-purple-500',
+  'bg-orange-500',
+  'bg-orange-600',
+  'bg-neutral-800',
+  'bg-orange-400',
+  'bg-neutral-900',
+  'bg-amber-600',
 ];
 
 function colorFor(name: string) {
@@ -23,7 +23,7 @@ export function Avatar({ name, size = 'md' }: { name: string; size?: 'sm' | 'md'
   };
   return (
     <div
-      className={`${sizes[size]} ${colorFor(name)} rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0`}
+      className={`${sizes[size]} ${colorFor(name)} rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0 ring-2 ring-white`}
     >
       {getInitials(name)}
     </div>

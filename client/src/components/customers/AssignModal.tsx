@@ -76,12 +76,12 @@ export function AssignModal() {
         </div>
 
         {userId && selectedCount >= 4 && selectedCount < 5 && (
-          <div className="text-xs text-[#F59E0B] bg-amber-500/10 border border-amber-500/20 rounded-lg p-2">
+          <div className="alert-warning">
             ⚠ This user is at {selectedCount}/5 slots
           </div>
         )}
         {userId && selectedCount >= 5 && customer?.assignedTo !== userId && (
-          <div className="text-xs text-[#EF4444] bg-red-500/10 border border-red-500/20 rounded-lg p-2">
+          <div className="alert-error-inline">
             This user already has 5 customers assigned
           </div>
         )}

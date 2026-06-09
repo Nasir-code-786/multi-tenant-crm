@@ -10,7 +10,7 @@ interface Props {
 
 export function Pagination({ page, totalPages, onChange }: Props) {
   return (
-    <div className="flex items-center justify-between mt-4 text-sm text-[#94A3B8]">
+    <div className="flex items-center justify-between mt-4 text-sm text-muted">
       <button
         onClick={() => onChange(page - 1)}
         disabled={page <= 1}

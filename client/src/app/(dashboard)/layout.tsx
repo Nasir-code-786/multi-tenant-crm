@@ -15,10 +15,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, [router]);
 
   return (
-    <div className="flex h-screen bg-[#0F172A] text-white">
+    <div className="flex flex-col lg:flex-row h-screen bg-[var(--bg-main)]">
       <Sidebar />
       <main className="flex-1 overflow-y-auto">
-        <div className="p-8">{children}</div>
+        <div className="p-6 md:p-8 max-w-7xl mx-auto w-full">{children}</div>
       </main>
     </div>
   );

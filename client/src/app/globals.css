@@ -3,20 +3,28 @@
 @tailwind utilities;
 
 :root {
-  --bg: #0F172A;
-  --surface: #1E293B;
-  --border: #334155;
-  --primary: #6366F1;
-  --primary-hover: #4F46E5;
-  --success: #10B981;
-  --danger: #EF4444;
-  --warning: #F59E0B;
-  --text: #F8FAFC;
-  --text-secondary: #94A3B8;
+  --bg-main: #f5f5f5;
+  --surface: #ffffff;
+  --surface-dark: #0a0a0a;
+  --surface-dark-soft: #171717;
+  --border: #e5e5e5;
+  --border-dark: #262626;
+  --primary: #f97316;
+  --primary-hover: #ea580c;
+  --primary-light: #fff7ed;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --warning: #f97316;
+  --text: #0a0a0a;
+  --text-secondary: #525252;
+  --text-muted: #737373;
+  --text-on-dark: #ffffff;
+  --text-muted-on-dark: #a3a3a3;
 }
 
-html, body {
-  background: var(--bg);
+html,
+body {
+  background: var(--bg-main);
   color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -28,24 +36,78 @@ html, body {
 
 @layer components {
   .card {
-    @apply bg-[#1E293B] border border-[#334155] rounded-xl;
+    @apply bg-white border border-neutral-200 rounded-xl shadow-sm;
   }
+
+  .card-header {
+    @apply flex items-center justify-between p-4 border-b border-neutral-200;
+  }
+
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 bg-[#6366F1] hover:bg-[#4F46E5] text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm;
   }
+
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 bg-[#334155] hover:bg-[#475569] text-white px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 bg-white border border-neutral-300 hover:border-neutral-900 hover:bg-neutral-50 text-neutral-900 px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50;
   }
+
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 bg-[#EF4444] hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors;
+    @apply inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors;
   }
+
   .btn-icon {
-    @apply inline-flex items-center justify-center w-8 h-8 rounded-md text-[#94A3B8] hover:text-white hover:bg-[#334155] transition-colors;
+    @apply inline-flex items-center justify-center w-8 h-8 rounded-md text-neutral-500 hover:text-orange-600 hover:bg-orange-50 transition-colors;
   }
+
   .input {
-    @apply w-full bg-[#0F172A] border border-[#334155] rounded-lg px-3 py-2 text-white placeholder:text-[#64748B] focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:border-transparent;
+    @apply w-full bg-white border border-neutral-200 rounded-lg px-3 py-2 text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent;
   }
+
   .label {
-    @apply block text-sm font-medium text-[#94A3B8] mb-1;
+    @apply block text-sm font-medium text-neutral-600 mb-1;
+  }
+
+  .text-muted {
+    color: var(--text-secondary);
+  }
+
+  .table-head {
+    @apply bg-neutral-950 text-neutral-400 text-left border-b-2 border-orange-500;
+  }
+
+  .table-row {
+    @apply hover:bg-orange-50/60 transition-colors;
+  }
+
+  .table-divide {
+    @apply divide-y divide-neutral-200;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-2 bg-orange-50 border border-orange-100 px-2 py-1 rounded-full text-xs text-neutral-800;
+  }
+
+  .badge-muted {
+    @apply inline-flex items-center text-xs text-neutral-500 bg-neutral-100 border border-neutral-200 px-2 py-1 rounded-full;
+  }
+
+  .link-back {
+    @apply inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-orange-600 transition-colors;
+  }
+
+  .icon-accent {
+    @apply text-orange-500;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold text-neutral-950 tracking-tight;
+  }
+
+  .alert-warning {
+    @apply text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-lg p-2;
+  }
+
+  .alert-error-inline {
+    @apply text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg p-2;
   }
 }
