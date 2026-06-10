@@ -119,7 +119,7 @@ export default function LoginPage() {
               type="button"
               onClick={() => {
                 const link = document.createElement('a');
-                link.href = '/files/Full-Stack-Engineer-Home-Assignment.pdf';
+                link.href = '/assets/Full-Stack-Engineer-Home-Assignment.pdf';
                 link.download = 'Full-Stack-Engineer-Home-Assignment.pdf';
                 document.body.appendChild(link);
                 link.click();
