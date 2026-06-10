@@ -68,7 +68,7 @@ export function AssignModal() {
               const count = slotCounts[u.id] ?? 0;
               return (
                 <option key={u.id} value={u.id}>
-                  {u.name} — {count}/5 slots used
+                  {u.name}
                 </option>
               );
             })}
