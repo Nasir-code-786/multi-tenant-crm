@@ -122,7 +122,6 @@ All seeded users share the password: **`password123`**
 
 | Email | Role | Organization |
 |-------|------|--------------|
-| alice@techcorp.com | admin | TechCorp Inc |
 | bob@techcorp.com | member | TechCorp Inc |
 | carol@techcorp.com | member | TechCorp Inc |
 | dave@startupxyz.com | admin | StartupXYZ |
