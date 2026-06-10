@@ -97,14 +97,6 @@ export default function LoginPage() {
 
             <ul className="text-xs text-neutral-600 space-y-1">
               <li>
-                <span className="font-medium text-neutral-700">alice@techcorp.com</span>
-                <span className="text-neutral-500"> — Admin</span>
-              </li>
-              <li>
-                <span className="font-medium text-neutral-700">bob@techcorp.com</span>
-                <span className="text-neutral-500"> — Member</span>
-              </li>
-              <li>
                 <span className="font-medium text-neutral-700">dave@startupxyz.com</span>
                 <span className="text-neutral-500"> — Admin</span>
               </li>
