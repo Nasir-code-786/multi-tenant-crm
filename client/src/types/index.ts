@@ -61,10 +61,13 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
+export type CustomerListStatus = 'active' | 'deleted';
+
 export interface CustomerQueryParams {
   page?: number;
   limit?: number;
   search?: string;
+  status?: CustomerListStatus;
 }
 
 export interface LoginResponse {

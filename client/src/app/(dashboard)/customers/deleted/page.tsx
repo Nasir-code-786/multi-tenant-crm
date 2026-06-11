@@ -1,43 +1,39 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus } from 'lucide-react';
 import { useCustomers } from '@/hooks/useCustomers';
-import { CustomerTable } from '@/components/customers/CustomerTable';
+import { DeletedCustomerTable } from '@/components/customers/DeletedCustomerTable';
 import { CustomerNavTabs } from '@/components/customers/CustomerNavTabs';
 import { SearchInput } from '@/components/shared/SearchInput';
 import { Pagination } from '@/components/shared/Pagination';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { ErrorMessage } from '@/components/shared/ErrorMessage';
-import { useUIStore } from '@/store/ui.store';
-import { CustomerForm } from '@/components/customers/CustomerForm';
 
-export default function CustomersPage() {
+export default function DeletedCustomersPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const openCreate = useUIStore((s) => s.openCreateModal);
 
   const { data, isLoading, isError, error } = useCustomers({
     page,
     limit: 20,
     search,
-    status: 'active',
+    status: 'deleted',
   });
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
+      <div className="mb-6">
         <h1 className="page-title">Customers</h1>
-        <button onClick={openCreate} className="btn-primary">
-          <Plus className="w-4 h-4" /> New Customer
-        </button>
+        <p className="text-muted text-sm mt-1">
+          Restore soft-deleted customers. They will reappear in the active list.
+        </p>
       </div>
 
       <CustomerNavTabs />
 
       <div className="mb-4">
         <SearchInput
-          placeholder="Search customers..."
+          placeholder="Search deleted customers..."
           onSearch={(v) => {
             setSearch(v);
             setPage(1);
@@ -49,13 +45,10 @@ export default function CustomersPage() {
       {isError && <ErrorMessage message={(error as Error)?.message} />}
       {data && (
         <>
-          <CustomerTable customers={data.data} />
+          <DeletedCustomerTable customers={data.data} />
           <Pagination page={data.page} totalPages={data.totalPages} onChange={setPage} />
         </>
       )}
-
-      <CustomerForm mode="create" />
-      <CustomerForm mode="edit" />
     </div>
   );
 }

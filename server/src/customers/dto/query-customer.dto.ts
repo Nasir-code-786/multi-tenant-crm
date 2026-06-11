@@ -1,6 +1,8 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
+
+export type CustomerListStatus = 'active' | 'deleted';
 
 export class QueryCustomerDto {
   @ApiPropertyOptional({ default: 1 })
@@ -21,4 +23,9 @@ export class QueryCustomerDto {
   @IsOptional()
   @IsString()
   search?: string;
+
+  @ApiPropertyOptional({ enum: ['active', 'deleted'], default: 'active' })
+  @IsOptional()
+  @IsIn(['active', 'deleted'])
+  status?: CustomerListStatus;
 }

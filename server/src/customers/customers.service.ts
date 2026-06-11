@@ -28,12 +28,18 @@ export class CustomersService {
   async findAll(query: QueryCustomerDto, user: CurrentUserPayload) {
     const page = query.page ?? 1;
     const limit = query.limit ?? 20;
+    const status = query.status ?? 'active';
 
     const qb = this.customers
       .createQueryBuilder('c')
       .leftJoinAndSelect('c.assignee', 'assignee')
-      .where('c.organizationId = :orgId', { orgId: user.organizationId })
-      .andWhere('c.deletedAt IS NULL');
+      .where('c.organizationId = :orgId', { orgId: user.organizationId });
+
+    if (status === 'deleted') {
+      qb.withDeleted().andWhere('c.deletedAt IS NOT NULL');
+    } else {
+      qb.andWhere('c.deletedAt IS NULL');
+    }
 
     if (query.search) {
       qb.andWhere(
